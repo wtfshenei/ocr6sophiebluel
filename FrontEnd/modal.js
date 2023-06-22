@@ -9,6 +9,9 @@ if (sessionStorage.getItem('token') !== null) {
      * FUNCTIONS FOR CREATE MODALS
     */
     
+    /**
+     * Crée dynamiquement la modale permettant l'affichage et la suppression des travaux 
+     **/
     function createModal() {
         let modalDiv = document.querySelector('.modal');
         
@@ -21,7 +24,7 @@ if (sessionStorage.getItem('token') !== null) {
         }
     
         const modalWrapper = document.createElement('div');
-        modalWrapper.className = 'modal-wrapper modal-bg-color modal-test';
+        modalWrapper.className = 'modal-wrapper modal-bg-color modal-zone';
         modalDiv.appendChild(modalWrapper);
 
         getWorksForModal()
@@ -65,20 +68,18 @@ if (sessionStorage.getItem('token') !== null) {
 
         const closeButton = document.querySelector('.close-modale');
         closeButton.addEventListener('click', closeModal);
-
-        // const modalZone = document.querySelector('.modal');
-        // modalZone.addEventListener('click', (e) => {
-        //     if (!e.target.closest('.modal-wrapper')) { closeModal(); }
-        // });
     }
     
+    /**
+     * Crée dynamiquement la modale permettant l'upload de nouveaux travaux 
+     **/
     function createModalUpload() {
         outsideModal()  
 
         const modalDivUpload = document.querySelector('.modal');
       
         const modalUploadWrapper = document.createElement('div');
-        modalUploadWrapper.className = 'modal-wrapper-upload modal-bg-color modal-test'
+        modalUploadWrapper.className = 'modal-wrapper-upload modal-bg-color modal-zone'
         modalDivUpload.appendChild(modalUploadWrapper);
 
         const modalUploadReturn = document.createElement('i');
@@ -175,17 +176,16 @@ if (sessionStorage.getItem('token') !== null) {
 
         const closeButtonModal = document.querySelector('.close-modale-upload');
         closeButtonModal.addEventListener('click', closeModal);
-
-        // const modalZone = document.querySelector('.modal');
-        // modalZone.addEventListener('click', (e) => {
-        //     if (!e.target.closest('.modal-wrapper-upload')) { closeModal(); }
-        // });
     }
     
     /**
      * FUNCTIONS FOR MODALS MANAGEMENT
      */
 
+    /**
+     * Permet l'affichage des travaux dans la modale d'administration
+     * Chaque travaux se voit ajouter un bouton permettant la suppression du travail sélectionné 
+     **/
     function displayWorksOnModal(worksModal) {
         outsideModal()
       
@@ -223,6 +223,9 @@ if (sessionStorage.getItem('token') !== null) {
         }
     }
 
+    /**
+     * Supprime l'ensemble des travaux 
+     **/
     function deleteAllWorks() {
         const workElements = document.querySelectorAll('.work-container');
       
@@ -232,6 +235,10 @@ if (sessionStorage.getItem('token') !== null) {
         });
     }
     
+    /**
+     * Permet l'ouverture de la modale d'administration via les sélecteurs '.btn-modal'
+     * Permet de retourner de la modale d'upload à la modale d'administration via le sélecteur '.btn-return' 
+     **/
     function openModal() {
         if (document.querySelectorAll('.btn-modal')) {
             const buttonsModal = document.querySelectorAll('.btn-modal');
@@ -245,6 +252,10 @@ if (sessionStorage.getItem('token') !== null) {
         }
     }
     
+    /**
+     * Permet de fermer les modales
+     * Utilisé pour les petites croix en haut à droite des modales
+     **/
     function closeModal() {
         const modal = document.querySelector('.modal');
         const modalWorks = document.querySelector('.modal-wrapper');
@@ -254,21 +265,29 @@ if (sessionStorage.getItem('token') !== null) {
         }
     }
         
-      function outsideModal() {  
-        if (document.querySelector('.modal')) {
-          const modalZone = document.querySelector('.modal')
+    /**
+     * Permet de fermer la modale active si l'utilisateur clique en dehors de la pop-in 
+     **/
+    function outsideModal() {  
+      if (document.querySelector('.modal')) {
+        const modalZone = document.querySelector('.modal')
 
-          modalZone.addEventListener('click', (e) => {
-            if (!e.target.closest('.modal-test')) { closeModal(); }
-          });
-        }
+        modalZone.addEventListener('click', (e) => {
+          if (!e.target.closest('.modal-zone')) { closeModal(); }
+        });
       }
+    }
 
     
     /**
      * FUNCTIONS FETCH
      */
 
+    /**
+     * Communique avec l'API afin de récupérer les travaux stockés en base de données
+     * Utilisé pour displayWorksOnModal()
+     * Est active à chaque création de la modale d'administration
+     **/
     function getWorksForModal() {
         fetch('http://localhost:5678/api/works')
           .then(response => response.json())
@@ -281,6 +300,10 @@ if (sessionStorage.getItem('token') !== null) {
           .catch(error => console.log(error));
     }
 
+    /**
+     * Communique avec l'API afin de récupérer les catégories créées en base de données
+     * Utilisé pour avoir les différentes catégories lors de l'upload d'un nouveau travail 
+     **/
     function getCategoriesForModal() {
         fetch('http://localhost:5678/api/categories')
             .then(response => response.json())
@@ -293,6 +316,9 @@ if (sessionStorage.getItem('token') !== null) {
             });
     }
 
+    /**
+     * Supprime le travail sélectionné en cliquant sur l'icône de suppression 
+     **/
     function deleteWork(workId) {
         const deleteUrl = `http://localhost:5678/api/works/${workId}`;
         const token = sessionStorage.getItem('token');
@@ -319,6 +345,11 @@ if (sessionStorage.getItem('token') !== null) {
           });
     }
 
+    /**
+     * Permet d'ajouter un nouveau travail en base de données
+     * Nécessite un fichier, un titre et une catégorie
+     * Si l'upload réussi, le travail est dynamiquement ajouté à la homepage 
+     **/
     function uploadWork() {
         const uploadUrl = 'http://localhost:5678/api/works/';
         const token = sessionStorage.getItem('token');
@@ -376,15 +407,25 @@ if (sessionStorage.getItem('token') !== null) {
             .catch(error => {
               console.error('Une erreur s\'est produite lors de l\'envoi de la requête :', error);
             });
-        } else {
-          if (!image) {
-            console.error('Aucun fichier sélectionné.')
-            const modalUploadInputTitleObject = document.querySelector('.input-modal')
-            modalUploadInputTitleObject.classList.add('error')
-          }
-          if (!title) {
-            console.error('Veuillez saisir un titre.');
-          }
+          } else {
+            if (!image) {
+              const modalUpload = document.querySelector('.modal-wrapper-upload')
+              const fileMissing = document.createElement('span')
+              fileMissing.className = 'error-upload-file'
+              fileMissing.innerText = 'Veuillez choisir une photo'
+              modalUpload.append(fileMissing)
+              const modalUploadFileInput = document.getElementById('picture-box')
+              modalUploadFileInput.style.border = '2px solid red'
+            }
+            if (!title) {
+              const modalUpload = document.querySelector('.modal-wrapper-upload')
+              const titleMissing = document.createElement('span')
+              titleMissing.className = 'error-upload-title'
+              titleMissing.innerText = 'Veuillez indiquer un titre'
+              modalUpload.append(titleMissing)
+              const modalUploadInputTitleObject = document.querySelector('.input-modal')
+              modalUploadInputTitleObject.classList.add('error')
+            }
         }
       }
 
@@ -393,7 +434,9 @@ if (sessionStorage.getItem('token') !== null) {
      * FUNCTIONS FOR UPLOAD
      */
 
-    // Options for category choice upload form
+    /**
+     * Utilise le résultat de getCategoriesForModal() afin d'afficher les différentes catégories récupérées sous forme d'options dans le champ de formulaire 'select' 
+     **/
     function optionsForModalUpload(categoriesModal) {    
         categoriesModal.forEach(category => {
             const modalUploadCatObjectTarget = document.querySelector('select')
@@ -404,6 +447,9 @@ if (sessionStorage.getItem('token') !== null) {
         });
     }
 
+    /**
+     * Transforme le fichier que l'utilisateur souhaite upload en base64 afin de pouvoir en créer dynamiquement une prévisualisation 
+     **/
     function previewFile() {
         const preview = document.querySelector('#file-img');
         let file = document.querySelector('#file-upload').files[0];
@@ -431,6 +477,11 @@ if (sessionStorage.getItem('token') !== null) {
         }
     }
 
+    /**
+     * Vérifie si, lors d'une tentative d'upload, l'utilisateur a bien choisi un fichier et un titre
+     * Si un des 2 champs est manquant : le bouton d'upload est grisé
+     * Si les 2 champs sont bien remplis : le bouton d'upload devient vert 
+     **/
     function checkInputFields() {
         const modalUploadFileInput = document.getElementById('file-upload');
         let modalUploadInputTitleObject = document.querySelector('.input-modal');
@@ -440,10 +491,8 @@ if (sessionStorage.getItem('token') !== null) {
         const button = document.querySelector('.btn-photos')
         
         if (fileInputValue === '' || titleInputValue === '') {
-            button.disabled = true;
             button.classList.add('disabled')
         } else {
-            button.disabled = false;
             button.classList.remove('disabled')
         }
     }

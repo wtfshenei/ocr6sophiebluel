@@ -2,9 +2,7 @@ if (sessionStorage.getItem('token') !== null) {
     /**
      * CONSTANTES / VARIABLES
      */
-    const divProjects = document.querySelector('.modif-display-projects');
-
-    const logoutActive = document.getElementsByClassName('.logout-active')
+    const divProjects = document.querySelector('.modif-display-projects')
     const logout = document.querySelector('.loginOut')
 
 
@@ -12,7 +10,9 @@ if (sessionStorage.getItem('token') !== null) {
      * FUNCTION FOR USER ADMIN INTERFACE
      */
 
-    // Display Admin Bar on top screen
+    /**
+     * Modifie la homepage afin d'y créer la barre d'administration au top 
+     **/
     function displayEditBar() {
         const adminBar = document.querySelector(".admin-bar");
         adminBar.classList.add('editing');
@@ -42,7 +42,9 @@ if (sessionStorage.getItem('token') !== null) {
         adminBar.appendChild(buttonPublish);
     }
 
-    // Display links for open modal
+    /**
+     * Fait apparaître les liens de modifications permettant d'ouvrir la modale 
+     **/
     function displayEditLinks() {
         const button = document.createElement("button");
         button.className = "modif white modif-typo btn-modal";
@@ -61,6 +63,9 @@ if (sessionStorage.getItem('token') !== null) {
         });
     }
 
+    /**
+     * Fait disparaître les boutons de filtres et modifie le padding top de la section projets pour un meilleur rendu visuel 
+     **/
     function betterAdminInterface() {
         document.getElementsByClassName('filters')[0].style.display = "none";
         divProjects.style.paddingTop = "0px";
@@ -71,20 +76,26 @@ if (sessionStorage.getItem('token') !== null) {
      * FUNCTION FOR LOGOUT
      */
 
-    // Display logout link
+    /**
+     * Transforme le lien Login en Logout
+     **/
     function logoutLink() {
         logout.innerText = "logout"
         logout.innerHTML = `<a href="#">logout</a>`
         logout.className = "logout-active"
     }
 
-    // Logout by session clear
+    /**
+     * Supprime le stockage de session afin de supprimer le token de l'utilisateur et ainsi le déconnecter 
+     **/
     function logoutSession() {
         sessionStorage.clear();
         window.location.href = 'index.html';
     }
 
-    // Event for logout
+    /**
+     * Permet à l'utilisateur de se déconnecter via logoutSession() en cliquant sur le lien 'logout' créé par logoutLink() 
+     */
     logout.addEventListener('click', logoutSession)
 
 

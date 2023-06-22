@@ -8,9 +8,11 @@ const filters = document.getElementById('filters')
 
 /**
  * FUNCTIONS FOR WORKS 
- */
+ **/
 
-// Fetch Works
+/**
+ * Communique avec l'API afin de récupérer les travaux stockés en base de données 
+ **/
 function getWorksForHomepage() {
     fetch('http://localhost:5678/api/works')
       .then(response => response.json())
@@ -24,7 +26,9 @@ function getWorksForHomepage() {
       .catch(error => console.log(error));
 }
 
-// Display Works
+/**
+ * Affiche de manière dynamique les travaux récupérés via getWorksForHomepage() en manipulant le DOM
+ **/
 function displayWorksOnHomepage(works) {
     for (let i = 0; i < works.length; i++) {
 
@@ -52,7 +56,9 @@ function displayWorksOnHomepage(works) {
  * FUNCTIONS FOR CATEGORIES
  */
 
-// Fetch Categories
+/**
+ * Communique avec l'API afin de récupérer les catégories créées en base de données 
+ **/
 function getCategoriesForHomepage() {
     fetch('http://localhost:5678/api/categories')
      .then(response => response.json())
@@ -62,7 +68,10 @@ function getCategoriesForHomepage() {
      .catch(error => console.log(error))
 }
 
-// Display Categories
+/**
+ * Affiche de manière dynamique les catégories récupérées en base de données grâce à getCategoriesForHomepage()
+ * Les catégories sont affichées sous forme de boutons de filtres, toutefois le bouton 'Tous' est créé en dur dans le HTML 
+ **/
 function displayCategoriesOnHomepage(categories) {
     for ( let i = 0; i < categories.length ; i++ ) {
         const category = categories[i];
@@ -88,7 +97,9 @@ function displayCategoriesOnHomepage(categories) {
  * ADDEVENTLISTENERS 
  */
 
-// For display all works
+/**
+ * Gère le bouton de filtre 'Tous'
+ **/
 function buttonFilterAllWorks() {    
     filterAll.addEventListener("click", function () {
         const worksAll = works.filter(function (work) {
