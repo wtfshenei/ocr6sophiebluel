@@ -184,6 +184,11 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+	cursor: pointer;
+}
+
+input[type="submit"].input-login {
+	margin-top: 50px;
 }
 
 footer nav ul {
@@ -265,6 +270,7 @@ footer nav ul {
 	border: none;
 	margin-left: 15px;
 	font-weight: bold;
+	cursor: pointer;
 }
 
 .black {
@@ -369,6 +375,7 @@ footer nav ul {
 	font-size: 14px;
 	line-height: 16px;
 	text-align: center;
+	cursor: pointer;
 }
 
 .gallery2 {
@@ -401,6 +408,7 @@ footer nav ul {
 	right: 35px;
 	width: 12px;
 	height: 12px;
+	cursor: pointer;
 }
 
 .fa-arrow-left {
@@ -409,6 +417,7 @@ footer nav ul {
 	left: 35px;
 	width: 12px;
 	height: 12px;
+	cursor: pointer;
 }
 
 .gallery2 img {
@@ -444,6 +453,7 @@ footer nav ul {
 
 .fa-trash-can {
 	color: white;
+	cursor: pointer;
 }
 
 .gallery2 > p {
@@ -477,13 +487,13 @@ footer nav ul {
 
 .link-supp-gallery {
 	position: absolute;
+	cursor: pointer;
 	left: 38%;
 	width: 25%;
 	color: red;
 	background: none;
 	border: none;
 	margin-top: 30px;
-	padding-bottom: 30px;
 	font-family: Syne;
 	font-size: 14px;
 	font-weight: 400;
@@ -504,10 +514,6 @@ footer nav ul {
 	margin-bottom: 30px;
 	border: none;
 }
-
-/* .picture-box.error {
-	border : 2px solid red;
-} */
 
 .h3-modal {
 	font-family: 'Work Sans';
@@ -595,13 +601,10 @@ footer nav ul {
 	display: block;
 }
 
-.login-email-error {
-	display: none;
-	color: red;
-}
-
-.login-password-error {
-	display: none;
+.login-error {
+	position: absolute;
+	top : 435px;
+	left: 45%;
 	color: red;
 }
 
@@ -619,4 +622,39 @@ footer nav ul {
 	margin-left: 225px;
 	color: red;
 	background: #FFF;
+}
+
+.empty-work {
+	width: 100%;
+	height: 100px;
+	margin-left: 105%;
+}
+
+.error-color {
+	color: red;
+}
+
+.error-delete-work {
+	position: absolute;
+	color: red;
+	background-color: #FFF;
+	left: 24%;
+	top: 410px;
+	margin-top: 10px;
+}
+
+.error-upload-work {
+	position: absolute;
+	color: red;
+	background-color: #FFF;
+	left: 27%;
+	top: 485px;
+	margin-top: 10px;
+}
+
+.error-categories-upload {
+	position: absolute;
+	background: #fff;
+	margin-top: 20px;
+	left: 13%;
 }
