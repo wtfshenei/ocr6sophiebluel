@@ -66,7 +66,7 @@ if (sessionStorage.getItem("token") !== null) {
    * Fait disparaître les boutons de filtres et modifie le padding top de la section projets pour un meilleur rendu visuel
    **/
   function betterAdminInterface() {
-    document.getElementsByClassName("filters")[0].style.display = "none";
+    // document.getElementsByClassName("filters")[0].style.display = "none";
     divProjects.style.paddingTop = "0px";
   }
 

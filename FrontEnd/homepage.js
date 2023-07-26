@@ -22,7 +22,18 @@ function getWorksForHomepage() {
       displayWorksOnHomepage(works);
       buttonFilterAllWorks();
     })
-    .catch((error) => console.log(error));
+    .catch(() => {
+      const displayWork = document.querySelector(".gallery");
+      const emptyWorkModal = document.createElement("p");
+      emptyWorkModal.className = "error-color";
+      emptyWorkModal.classList.add("error-works-homepage");
+      emptyWorkModal.innerText =
+        "Une erreur est survenue lors de la récupération des travaux.";
+      displayWork.append(emptyWorkModal);
+
+      const buttonsFilters = document.querySelector(".filters");
+      buttonsFilters.style.display = "none";
+    });
 }
 
 /**

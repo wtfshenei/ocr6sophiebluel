@@ -29,14 +29,14 @@ function tryTologUser(email, password) {
           const loginErrorSelector = document.getElementById("login-form");
           const loginError = document.createElement("p");
           loginError.className = "login-error";
-          loginError.innerText = "Erreur : identifiants inconnus";
+          loginError.innerText = "Identifiants inconnus";
           loginErrorSelector.append(loginError);
         }
       }
     })
     .then((user) => {
       sessionStorage.setItem("token", user.token);
-      window.location.href = "index.html";
+      window.location.href = "/";
     });
 }
 

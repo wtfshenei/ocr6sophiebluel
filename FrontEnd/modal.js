@@ -246,11 +246,30 @@ if (sessionStorage.getItem("token") !== null) {
    **/
   function deleteAllWorks() {
     const workElements = document.querySelectorAll(".work-container");
+    const deletePromises = [];
 
     workElements.forEach((workElement) => {
       const workId = workElement.getAttribute("data-id");
-      deleteWork(workId);
+      const deletePromise = fetch(`http://localhost:5678/api/works/${workId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      });
+      deletePromises.push(deletePromise);
     });
+
+    Promise.all(deletePromises)
+      .then(() => {
+        getWorksForModal();
+        getWorksForHomepage();
+      })
+      .catch((error) => {
+        console.log(
+          "Une erreur est survenue lors de la suppression des travaux :",
+          error
+        );
+      });
   }
 
   /**
@@ -389,12 +408,10 @@ if (sessionStorage.getItem("token") !== null) {
           displayError.append(failDeleteWork);
         }
       })
-      .then(() => {
-        getWorksForModal();
-      })
-      .catch(() => {
+      .catch((err) => {
         console.log(
-          "Une erreur est survenue lors de la suppression du travail"
+          "Une erreur est survenue lors de la suppression du travail" +
+            console.log(err)
         );
       });
   }
@@ -492,6 +509,15 @@ if (sessionStorage.getItem("token") !== null) {
         const modalUploadInputTitleObject =
           document.querySelector(".input-modal");
         modalUploadInputTitleObject.classList.add("error");
+      }
+      if (!category) {
+        const modalUpload = document.querySelector(".modal-wrapper-upload");
+        const fileMissing = document.createElement("span");
+        fileMissing.className = "error-upload-category";
+        fileMissing.innerText = "Veuillez choisir une catégorie";
+        modalUpload.append(fileMissing);
+        const modalUploadFileInput = document.querySelector("select");
+        modalUploadFileInput.style.border = "2px solid red";
       }
     }
   }
