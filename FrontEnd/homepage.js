@@ -1,9 +1,9 @@
 /**
  * CONSTANTES / VARIABLES
  */
-let works = [];
 const filterAll = document.querySelector(".btn-all");
 const filters = document.getElementById("filters");
+const displayWork = document.querySelector(".gallery");
 
 /**
  * FUNCTIONS FOR WORKS
@@ -12,18 +12,19 @@ const filters = document.getElementById("filters");
 /**
  * Communique avec l'API afin de récupérer les travaux stockés en base de données
  **/
-function getWorksForHomepage() {
+function getWorksForHomepage(categoryId = null) {
   fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
-    .then((arrayWorks) => {
-      return (works = arrayWorks);
-    })
-    .then(() => {
-      displayWorksOnHomepage(works);
+    .then((works) => {
+      if (categoryId === null) {
+        displayWorksOnHomepage(works);
+      } else {
+        const newWorks = works.filter((work) => work.categoryId === categoryId);
+        displayWorksOnHomepage(newWorks);
+      }
       buttonFilterAllWorks();
     })
     .catch(() => {
-      const displayWork = document.querySelector(".gallery");
       const emptyWorkModal = document.createElement("p");
       emptyWorkModal.className = "error-color";
       emptyWorkModal.classList.add("error-works-homepage");
@@ -40,7 +41,7 @@ function getWorksForHomepage() {
  * Affiche de manière dynamique les travaux récupérés via getWorksForHomepage() en manipulant le DOM
  **/
 function displayWorksOnHomepage(works) {
-  const displayWork = document.querySelector(".gallery");
+  displayWork.innerHTML = "";
 
   if (works.length === 0) {
     const emptyWork = document.createElement("p");
@@ -82,7 +83,7 @@ function getCategoriesForHomepage() {
     })
     .catch((error) => {
       document.getElementsByClassName("filters")[0].style.display = "none";
-      console.log(error);
+      console.error(error);
     });
 }
 
@@ -99,11 +100,7 @@ function displayCategoriesOnHomepage(categories) {
     button.innerHTML = category.name;
 
     button.addEventListener("click", function () {
-      const workCategory = works.filter(function (works) {
-        return works.categoryId === categories[i].id;
-      });
-      document.querySelector(".gallery").innerHTML = "";
-      displayWorksOnHomepage(workCategory);
+      getWorksForHomepage(categories[i].id);
     });
 
     filters.append(button);
@@ -119,11 +116,7 @@ function displayCategoriesOnHomepage(categories) {
  **/
 function buttonFilterAllWorks() {
   filterAll.addEventListener("click", function () {
-    const worksAll = works.filter(function (work) {
-      return work.id;
-    });
-    document.querySelector(".gallery").innerHTML = "";
-    displayWorksOnHomepage(worksAll);
+    getWorksForHomepage();
   });
 }
 

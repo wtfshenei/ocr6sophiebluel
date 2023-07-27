@@ -262,7 +262,6 @@ if (sessionStorage.getItem("token") !== null) {
     Promise.all(deletePromises)
       .then(() => {
         getWorksForModal();
-        getWorksForHomepage();
       })
       .catch((error) => {
         console.log(
